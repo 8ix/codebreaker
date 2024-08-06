@@ -26,6 +26,7 @@ export default class CodebreakerEngine {
       this.debug = config.debug;
 
       config.secretCode.length === 0 ? this.generateSecretCode() : null;
+      this.debugMessage(["Game Initiated:", this.secretCode]);
     }
   
     generateSecretCode() {
