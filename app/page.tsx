@@ -1,17 +1,23 @@
 import Image from "next/image";
 import styles from "./page.module.css";
-import MastermindDungeon from "@/utils/MastermindDungeon";
+import MastermindDungeon from "@/utils/CodebreakerEngine";
 
 export default function Home() {
 
   const mastermind = new MastermindDungeon({
     items: ['H', 'L', 'E', 'L', 'O'],
     secretCode: ['H', 'E', 'L', 'L', 'O'],
-    rounds: 8,
-    lives: 3,
-    debug: true
+    rounds: 3 ,
+    lives: 1,
+    debug: false
   });
-  mastermind.makeGuess(['H', 'E', 'L', 'L', 'O']);
+  mastermind.makeGuess(['H', 'E', 'L']);
+  mastermind.makeGuess(['H', 'E', 'L','P']);
+  mastermind.makeGuess(['H', 'G', 'L','P']);
+  mastermind.makeGuess(['H', 'E', 'L','L']);
+  let test = mastermind.makeGuess(['H', 'E', 'I','L','O']);
+
+  console.log(test);
 
   return (
     <main className={styles.main}>

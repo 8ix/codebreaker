@@ -1,6 +1,6 @@
-import {GameConfig, debugMessage, GuessResult, GameStatus} from './MastermindTypes';
+import {GameConfig, debugMessage, GuessResult, GameStatus} from './CodebreakerEngineTypes';
 
-export default class MastermindDungeon {
+export default class CodebreakerEngine {
     
     items: Array<string>;
     secretCode: Array<string>;
@@ -15,7 +15,7 @@ export default class MastermindDungeon {
       secretCode: [],
       rounds: 8,
       lives: 3,
-      debug: true
+      debug: false
     }){
       this.items = config.items;
       this.secretCode = config.secretCode;
@@ -49,16 +49,15 @@ export default class MastermindDungeon {
         !guessResult.solved ? this.rounds-- : null;
         this.rounds === 0 ? this.lives-- : null;
         this.debugMessage(["Rounds Remaining:",this.rounds, "Lives Remaining:",this.lives ]);
-        this.lives === 0 ? this.debug ? console.log("Game Over") : null : null;
+        this.lives === 0 ? this.debugMessage(["Game Over"]) : null;
       } 
-      
       guessResult.solved ? this.debugMessage(["Puzzle Solved"]) : null;
 
       return {
         guessHistory: this.guesses,
         roundsLeft: this.rounds,
         livesLeft: this.lives,
-        gameOver: this.lives != 0,
+        gameOver: this.lives <= 0,
         gameWon: guessResult.solved
       }
 
@@ -110,27 +109,17 @@ export default class MastermindDungeon {
         };
     }
 
+    getGameStatus(): GameStatus {
+      return {
+        guessHistory: this.guesses,
+        roundsLeft: this.rounds,
+        livesLeft: this.lives,
+        gameOver: this.lives <= 0,
+        gameWon: this.guesses[this.guesses.length-1].solved
+      }
+    }
+
     debugMessage(message: debugMessage){
       this.debug ? console.log(message) : null;
-    }
-
-    // Set up a new stage
-    // Increment currentStage
-    // Generate a new secret code
-    // Reset guesses
-    // If final stage is completed, generate return code
-    startNewStage() {
-     
-    }
-
-    // Get the current game state
-    // Useful for saving game progress or displaying info to the player
-    getGameState() {
-    
-    }
-  
-    // Reset the game to initial state
-    resetGame() {
-    
     }
   }
