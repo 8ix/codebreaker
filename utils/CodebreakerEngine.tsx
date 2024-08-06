@@ -46,12 +46,11 @@ export default class CodebreakerEngine {
       let guessResult = this.checkGuess(guess);
       this.guesses.push(guessResult);
 
-      if(this.rounds > 0){
-        !guessResult.solved ? this.rounds-- : null;
-        this.rounds === 0 ? this.lives-- : null;
-        this.debugMessage(["Rounds Remaining:",this.rounds, "Lives Remaining:",this.lives ]);
-        this.lives === 0 ? this.debugMessage(["Game Over"]) : null;
-      } 
+      !guessResult.solved && this.rounds != 0 ? this.rounds-- : null;
+      this.rounds === 0 ? this.lives-- : null;
+      this.debugMessage(["Rounds Remaining:",this.rounds, "Lives Remaining:",this.lives ]);
+      this.lives === 0 ? this.debugMessage(["Game Over"]) : null;
+    
       guessResult.solved ? this.debugMessage(["Puzzle Solved"]) : null;
 
       return {
