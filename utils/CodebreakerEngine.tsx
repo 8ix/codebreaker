@@ -119,6 +119,10 @@ export default class CodebreakerEngine {
       }
     }
 
+    getGuessHistory(): Array<GuessResult> {
+      return this.guesses;
+    }
+
     debugMessage(message: debugMessage){
       this.debug ? console.log(message) : null;
     }

@@ -1,55 +1,45 @@
 import React, { useContext, useState, useEffect, ReactElement, useRef, useCallback } from 'react';
 import { GameContext } from '../../context/GameContext';
+import { GameStatus } from '../../utils/CodebreakerEngineTypes';
 
 const PasswordEntryBoxes = () => {
-    const { gameEngine, isLoading } = useContext(GameContext);
-    const [guessCount, setGuessCount] = useState<number>(0);
+    const { gameEngine, isLoading, updateGameVersion } = useContext(GameContext);
+    const [characterCount, setCharacterCount] = useState<number>(0);
     const [guessValues, setGuessValues] = useState<string[]>([]);
+    const [lastResult, setLastResult] = useState<GameStatus | null>(null);
     const [characterBoxes, setCharacterBoxes] = useState<ReactElement[]>([]);
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
     // Set the number of character boxes to match the length of the secret code
     useEffect(() => {
         if (gameEngine && !isLoading) {
-            setGuessCount(gameEngine.secretCode.length);
+            setCharacterCount(gameEngine.secretCode.length);
+            setGuessValues(new Array(gameEngine.secretCode.length).fill(''));
         }
     }, [gameEngine, isLoading]);
-
-    // Create the character boxes
-    useEffect(() => {
-        const newCharacterBoxes: ReactElement[] = [];
-        for(let i = 0; i < guessCount; i++) {
-            newCharacterBoxes.push(
-                <input 
-                    type="text" 
-                    key={i} 
-                    ref={(el) => setInputRef(el, i)}
-                    maxLength={1} 
-                    style={{ width: '30px', marginRight: '5px' }} 
-                    onChange={(e) => handleInputChange(i, e.target.value)} 
-                    onKeyDown={(e) => handleKeyDown(i, e)}
-                />
-            );
-        }
-        setCharacterBoxes(newCharacterBoxes);
-    }, [guessCount]);
-
-    // Update the guess values array when a character box is changed
-    const handleInputChange = (index: number, value: string) => {
-        const newGuessValues = [...guessValues];
-        newGuessValues[index] = value;
-        setGuessValues(newGuessValues);
-
-        if (value && index < guessCount - 1) {
-            inputRefs.current[index + 1]?.focus();
-        }
-    };
 
     const setInputRef = useCallback((el: HTMLInputElement | null, index: number) => {
         inputRefs.current[index] = el;
     }, []);
 
-    const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    // Update the guess values array when a character box is changed
+    const handleInputChange = useCallback((index: number, value: string) => {
+        setGuessValues(prevValues => {
+            const newGuessValues = [...prevValues];
+            newGuessValues[index] = value;
+            return newGuessValues;
+        });
+
+        if (inputRefs.current[index]) {
+            inputRefs.current[index]!.value = value;
+        }
+
+        if (value && index < characterCount - 1) {
+            inputRefs.current[index + 1]?.focus();
+        }
+    }, [characterCount])
+
+    const handleKeyDown = useCallback((index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Backspace') {
             e.preventDefault();
             const newGuessValues = [...guessValues];
@@ -70,7 +60,7 @@ const PasswordEntryBoxes = () => {
             }
             
             // Special handling for the last input box
-            if (index === guessCount - 1 && newGuessValues[index] !== '') {
+            if (index === characterCount - 1 && newGuessValues[index] !== '') {
                 newGuessValues[index] = '';
                 if (inputRefs.current[index]) {
                     inputRefs.current[index]!.value = '';
@@ -78,10 +68,30 @@ const PasswordEntryBoxes = () => {
             }
             setGuessValues(newGuessValues);
         }
-    };
+    }, [characterCount, guessValues]);
 
+    // Create the character boxes
+    useEffect(() => {
+        const newCharacterBoxes: ReactElement[] = [];
+        for(let i = 0; i < characterCount; i++) {
+            newCharacterBoxes.push(
+                <input 
+                    type="text" 
+                    key={i} 
+                    ref={(el) => setInputRef(el, i)}
+                    maxLength={1} 
+                    value={guessValues[i] || ''}
+                    style={{ width: '30px', marginRight: '5px' }} 
+                    onChange={(e) => handleInputChange(i, e.target.value)} 
+                    onKeyDown={(e) => handleKeyDown(i, e)}
+                />
+            );
+        }
+        setCharacterBoxes(newCharacterBoxes);
+    }, [characterCount, guessValues, setInputRef]);
+
+    
     const handleSubmit = () => {
-      
         if (guessValues.some(value => value === '')) {
             alert('Please fill in all boxes before submitting.');
             return;
@@ -89,10 +99,12 @@ const PasswordEntryBoxes = () => {
         // Make a guess through the game engine
         if (gameEngine) {
             const result = gameEngine.makeGuess(guessValues);
+            setLastResult(result);
+            updateGameVersion();
             
-            console.log('Guess result:', result);
-            //Some more Logic to follow here.
-
+            // Clear the guessValues state
+            setGuessValues(new Array(characterCount).fill(''));
+            
             // Clear all input values and set focus to the first input
             inputRefs.current.forEach((inputRef, index) => {
                 if (inputRef) {
