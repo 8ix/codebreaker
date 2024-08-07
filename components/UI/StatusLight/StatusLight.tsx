@@ -37,7 +37,7 @@ const StatusLight = (props: StatusLightProps) => {
     
     for (let i = 0; i < props.count; i++) {
         lights.push(
-            <Light key={i} type={props.type} />
+            <Light key={'light-'+i+props.type} type={props.type} />
         );
     }
 
