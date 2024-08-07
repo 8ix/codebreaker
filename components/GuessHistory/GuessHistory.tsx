@@ -22,7 +22,6 @@ const GuessItemBar = styled.ul`
     padding: 0;
     flex-direction: row;
     justify-content: center;
-    background-color: #000;
 `;
 
 const LightWrapper = styled.div`
@@ -37,15 +36,30 @@ const LightWrapper = styled.div`
 
 const GuessItem = styled.li`
     text-align: center; 
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
     margin: 5px;
     background-color: #fff;
     color: #000;
     justify-content: center;
-    border: 1px solid #000;
+    border: 2px solid #000;
     border-radius: 50%;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 1.1em;
+
+    &.red{
+        background-color: #d4d4d4;
+        opacity: 0.3;
+    }
+    &.yellow{
+        background-color: #f0f868;
+    }
+    &.green{
+        background-color: #4b8f4b;
+        color: #fff;
+    }
 `;
 
 const GuessHistory = () => {
@@ -58,15 +72,18 @@ const GuessHistory = () => {
             const guessHistory = gameEngine.getGuessHistory();
             const guessesItems: ReactElement[] = [];
 
+
             guessHistory.forEach((guess, index) => {
 
                 let guessItems: ReactElement[] = [];
+                let wordPosition = 0;
 
                 guess.guess.forEach(element => {
                     guessItems.push(
-                        <GuessItem key={element+keycount}>{element}</GuessItem>
+                        <GuessItem key={element+keycount} className={String(guess.positions[wordPosition])}>{element}</GuessItem>
                     );
                     keycount++;
+                    wordPosition++;
                 });
 
                 guessesItems.push(
@@ -74,11 +91,6 @@ const GuessHistory = () => {
                         <GuessItemBar>
                             {guessItems}
                         </GuessItemBar>
-                        <LightWrapper>
-                            <StatusLight type="perfect" count={guess.perfect} />
-                            <StatusLight type="correct" count={guess.correct} />
-                            <StatusLight type="incorrect" count={guess.incorrect} />
-                        </LightWrapper>
                     </GuessHistoryContainer>
                 );
             });

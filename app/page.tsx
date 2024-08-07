@@ -48,7 +48,7 @@ function GameComponent() {
         secretCode: passwordRef.current.password.split(''),
         rounds: 8,
         lives: 1,
-        debug: false,
+        debug: true,
         clues: {
           passwordHint: passwordRef.current.passwordHint,
           passwordClue1: passwordRef.current.passwordClue1,

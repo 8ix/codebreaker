@@ -74,48 +74,49 @@ export default class CodebreakerEngine {
     }
   
     checkGuess(guess: string[]): GuessResult {
-        let perfectMatchesCount = 0;
-        let perfectMatchPositions = [];
-        let correctItemsCount = 0;
-        const secretCodeCopy = [...this.secretCode];
-        const guessCopy = [...guess];
-
+        const secretCodeCopy = this.secretCode.map(char => char.toLowerCase());
+        const guessCopy = guess.map(char => char.toLowerCase());
+    
+        // Initialize color codes array
+        let colorCodes = new Array(this.secretCode.length).fill('red');
+    
         // Check for perfect matches
         for (let i = 0; i < this.secretCode.length; i++) {
-            if (guess[i] === this.secretCode[i]) {
-                perfectMatchesCount++;
-                perfectMatchPositions[i] = true;
-                secretCodeCopy[i] = guessCopy[i] = '';
-            }else{
-              perfectMatchPositions[i] = false;
+            if (guessCopy[i] === secretCodeCopy[i]) {
+                colorCodes[i] = 'green';
+                secretCodeCopy[i] = null;
+                guessCopy[i] = null;
             }
         }
-
-        // Check for correct items in wrong positions
-        for (let i = 0; i < guessCopy.length; i++) {
+    
+        // Check for correct letters in wrong positions
+        for (let i = 0; i < this.secretCode.length; i++) {
             if (guessCopy[i] !== null) {
                 const index = secretCodeCopy.indexOf(guessCopy[i]);
                 if (index !== -1) {
-                    correctItemsCount++;
-                    secretCodeCopy[index] = '';
+                    colorCodes[i] = 'yellow';
+                    secretCodeCopy[index] = null;
                 }
             }
         }
-        correctItemsCount = correctItemsCount-perfectMatchesCount;
-
+    
+        const perfectMatches = colorCodes.filter(color => color === 'green').length;
+        const correctLetters = colorCodes.filter(color => color === 'yellow').length;
+        const incorrectLetters = colorCodes.filter(color => color === 'red').length;
+    
         this.debugMessage(["Guess Sent:", guess]);
-        this.debugMessage(["Perfect Matched Found:", perfectMatchesCount]);
-        this.debugMessage(["Incorrect Positions:", correctItemsCount]);
-        this.debugMessage([ "Incorrect:", this.items.length - perfectMatchesCount - correctItemsCount]);
-        this.debugMessage(["Matched Positions:", perfectMatchPositions]);
+        this.debugMessage(["Perfect Matches Found:", perfectMatches]);
+        this.debugMessage(["Incorrect Positions:", correctLetters]);
+        this.debugMessage(["Incorrect:", incorrectLetters]);
+        this.debugMessage(["Matched Positions:", colorCodes]);
         
         return {
-            solved: perfectMatchesCount === this.items.length,
+            solved: perfectMatches === this.secretCode.length,
             guess: guess,
-            perfect: perfectMatchesCount,
-            correct: correctItemsCount,
-            incorrect: this.items.length - perfectMatchesCount - correctItemsCount,
-            positions: perfectMatchPositions
+            perfect: perfectMatches,
+            correct: correctLetters,
+            incorrect: incorrectLetters,
+            positions: colorCodes
         };
     }
 
