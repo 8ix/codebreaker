@@ -7,6 +7,7 @@ import { GameProvider, GameContext } from '../context/GameContext';
 import Clues from '../components/Clues/Clues';
 import PasswordEntryBoxes from '../components/PasswordEntryBoxes/PasswordEntryBoxes';
 import GuessHistory from '../components/GuessHistory/GuessHistory';
+import Intro from '../components/Intro/Intro';
 
 //password list
 import Passwords from '../content/passwords.json';
@@ -62,6 +63,7 @@ function GameComponent() {
 
   return (
     <>
+      <Intro />
       <h1>Codebreaker Game</h1>
       <Clues />
       <PasswordEntryBoxes />
