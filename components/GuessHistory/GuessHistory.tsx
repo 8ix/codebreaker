@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState, ReactElement } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { GameContext } from '../../context/GameContext';
-
-import StatusLight from '../UI/StatusLight/StatusLight';
 
 const GuessHistoryWrapper = styled.div`
     display: flex;
     flex-direction: column;
+    padding-top:20px;
 `;
 
 const GuessHistoryContainer = styled.div`
@@ -14,6 +13,7 @@ const GuessHistoryContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     padding: 10px;
+    padding-bottom:20px;
 `;
 
 const GuessItemBar = styled.ul`
@@ -34,13 +34,15 @@ const LightWrapper = styled.div`
     }
 `;
 
+
+
 const GuessItem = styled.li`
     text-align: center; 
     width: 50px;
     height: 50px;
     line-height: 50px;
     margin: 5px;
-    background-color: #fff;
+    background-color: #fff;                 
     color: #000;
     justify-content: center;
     border: 2px solid #000;
@@ -78,6 +80,7 @@ const GuessHistory = () => {
                 let guessItems: ReactElement[] = [];
                 let wordPosition = 0;
 
+
                 guess.guess.forEach(element => {
                     guessItems.push(
                         <GuessItem key={element+keycount} className={String(guess.positions[wordPosition])}>{element}</GuessItem>
@@ -95,6 +98,7 @@ const GuessHistory = () => {
                 );
             });
 
+            guessesItems.reverse();
             setGuesses(guessesItems);
         }
     }, [gameEngine, gameVersion]);

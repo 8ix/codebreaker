@@ -73,7 +73,7 @@ const Clues = () => {
                 );
             }
 
-            if(game.roundsLeft <= 6){
+            if(game.roundsLeft <= 4){
                 game.clues !== null && hints.push(
                     <CluesItem key={game.clues.passwordClue1} className="expanded">
                         <p>{game.clues.passwordClue1}</p>
@@ -81,7 +81,7 @@ const Clues = () => {
                 );
             }
 
-            if(game.roundsLeft <= 4){
+            if(game.roundsLeft <= 3){
                 game.clues !== null && hints.push(
                     <CluesItem key={game.clues.passwordClue2} className="expanded">
                         <p>{game.clues.passwordClue2}</p>

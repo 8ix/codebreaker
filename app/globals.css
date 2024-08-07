@@ -38,6 +38,10 @@ a {
   animation: slideDown 1s forwards;
 }
 
+.incorrect {
+  background-color: red;
+}
+
 @keyframes slideUp {
   to {
       transform: translateY(-100%);

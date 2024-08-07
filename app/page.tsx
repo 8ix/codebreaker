@@ -46,9 +46,9 @@ function GameComponent() {
       const defaultConfig = {
         items: [],
         secretCode: passwordRef.current.password.split(''),
-        rounds: 8,
+        rounds: 5,
         lives: 1,
-        debug: true,
+        debug: false,
         clues: {
           passwordHint: passwordRef.current.passwordHint,
           passwordClue1: passwordRef.current.passwordClue1,
