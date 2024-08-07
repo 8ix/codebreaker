@@ -36,6 +36,7 @@ const GuessItem = styled.li`
 const GuessHistory = () => {
     const { gameEngine, isLoading, gameVersion } = useContext(GameContext);
     const [guesses, setGuesses] = useState<ReactElement[]>([]);
+    let keycount = 0;
 
     useEffect(() => {
         if (gameEngine) {
@@ -48,8 +49,9 @@ const GuessHistory = () => {
 
                 guess.guess.forEach(element => {
                     guessItems.push(
-                        <GuessItem key={element}>{element}</GuessItem>
+                        <GuessItem key={element+keycount}>{element}</GuessItem>
                     );
+                    keycount++;
                 });
 
                 guessesItems.push(

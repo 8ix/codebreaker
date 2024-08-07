@@ -1,11 +1,23 @@
 "use client"
 
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { GameProvider, GameContext } from '../context/GameContext';
 
 // Components
+import Clues from '../components/Clues/Clues';
 import PasswordEntryBoxes from '../components/PasswordEntryBoxes/PasswordEntryBoxes';
 import GuessHistory from '../components/GuessHistory/GuessHistory';
+
+//password list
+import Passwords from '../content/passwords.json';
+
+type Password = {
+  password: string;
+  passwordHint: string;
+  passwordClue1: string;
+  passwordClue2: string;
+  passwordClue3: string;
+}
 
 export default function Home() {
   return (
@@ -17,25 +29,41 @@ export default function Home() {
 
 function GameComponent() {
   const { isLoading, initGame, gameEngine } = useContext(GameContext);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const passwordRef = useRef<Password | null>(null);
 
   useEffect(() => {
     if (!gameEngine) {
+
+      if (!passwordRef.current) {
+        const randomPassword = Passwords[Math.floor(Math.random() * Passwords.length)];
+        passwordRef.current = randomPassword;
+      }
+
       const defaultConfig = {
-        items: ['1', '2', '3', '4', '5', '6'],
-        secretCode: [],
-        rounds: 10,
-        lives: 3,
-        debug: false
+        items: [],
+        secretCode: passwordRef.current.password.split(''),
+        rounds: 8,
+        lives: 1,
+        debug: false,
+        clues: {
+          passwordHint: passwordRef.current.passwordHint,
+          passwordClue1: passwordRef.current.passwordClue1,
+          passwordClue2: passwordRef.current.passwordClue2,
+          passwordClue3: passwordRef.current.passwordClue3
+        }
       };
       initGame(defaultConfig);
+      setIsInitialized(true);
     }
-  }, [initGame, gameEngine]);
+  }, [initGame, gameEngine, isInitialized]);
 
   if (isLoading) return <div>Loading game...</div>;
 
   return (
     <>
       <h1>Codebreaker Game</h1>
+      <Clues />
       <PasswordEntryBoxes />
       <GuessHistory />
     </>

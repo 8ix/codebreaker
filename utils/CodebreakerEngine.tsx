@@ -1,4 +1,4 @@
-import {GameConfig, debugMessage, GuessResult, GameStatus} from './CodebreakerEngineTypes';
+import {GameConfig, debugMessage, GuessResult, GameStatus, clues} from './CodebreakerEngineTypes';
 
 export default class CodebreakerEngine {
     
@@ -9,21 +9,30 @@ export default class CodebreakerEngine {
     lives: number;
     guesses: Array<GuessResult>;
     debug : boolean;
+    clues: clues;
 
     constructor(config: GameConfig = {
       items: ['1', '2', '3', '4', '5', '6', '7', '8'],
       secretCode: [],
       rounds: 8,
       lives: 3,
-      debug: false
+      debug: false,
+      clues: null
     }){
-      this.items = config.items;
+
+      if(config.items.length > 0){
+        this.items = config.items;
+      }else{
+        this.items = config.secretCode;
+      }
+
       this.secretCode = config.secretCode;
       this.currentStage = 1;
       this.rounds = config.rounds;
       this.lives = config.lives;
       this.guesses = [];
       this.debug = config.debug;
+      this.clues = config.clues;
 
       config.secretCode.length === 0 ? this.generateSecretCode() : null;
       this.debugMessage(["Game Initiated:", this.secretCode]);
@@ -55,6 +64,7 @@ export default class CodebreakerEngine {
 
       return {
         guessHistory: this.guesses,
+        clues: this.clues,
         roundsLeft: this.rounds,
         livesLeft: this.lives,
         gameOver: this.lives <= 0,
@@ -112,10 +122,11 @@ export default class CodebreakerEngine {
     getGameStatus(): GameStatus {
       return {
         guessHistory: this.guesses,
+        clues: this.clues,
         roundsLeft: this.rounds,
         livesLeft: this.lives,
         gameOver: this.lives <= 0,
-        gameWon: this.guesses[this.guesses.length-1].solved
+        gameWon: this.guesses.length > 0 ? this.guesses[this.guesses.length-1].solved : false
       }
     }
 

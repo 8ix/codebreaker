@@ -77,7 +77,7 @@ const PasswordEntryBoxes = () => {
             newCharacterBoxes.push(
                 <input 
                     type="text" 
-                    key={i} 
+                    key={i+'password-entry-box'}
                     ref={(el) => setInputRef(el, i)}
                     maxLength={1} 
                     value={guessValues[i] || ''}
