@@ -8,6 +8,8 @@ import Clues from '../components/Clues/Clues';
 import PasswordEntryBoxes from '../components/PasswordEntryBoxes/PasswordEntryBoxes';
 import GuessHistory from '../components/GuessHistory/GuessHistory';
 import Intro from '../components/Intro/Intro';
+import Container from '../components/UI/Container/Container';
+import Logo from '../components/UI/Logo/Logo';
 
 //password list
 import Passwords from '../content/passwords.json';
@@ -61,13 +63,17 @@ function GameComponent() {
 
   if (isLoading) return <div>Loading game...</div>;
 
+  //  <Intro />
+
   return (
-    <>
-      <Intro />
-      <h1>Codebreaker Game</h1>
-      <Clues />
-      <PasswordEntryBoxes />
-      <GuessHistory />
-    </>
+      <>
+        <Intro />
+        <Container paddingTop={60}>
+          <Logo inverted={true} />
+          <PasswordEntryBoxes />
+          <Clues />
+          <GuessHistory />
+        </Container>
+      </>
   );
 }

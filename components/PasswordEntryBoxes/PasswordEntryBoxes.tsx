@@ -1,6 +1,47 @@
 import React, { useContext, useState, useEffect, ReactElement, useRef, useCallback } from 'react';
 import { GameContext } from '../../context/GameContext';
 import { GameStatus } from '../../utils/CodebreakerEngineTypes';
+import Modal from '../UI/Modal/Modal';
+
+import styled from 'styled-components';
+
+type BoxWrapperProps = {
+    boxCount: number;
+}
+
+const BoxWrapper = styled.div<BoxWrapperProps>`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-top: 50px;
+    max-width: 800px;
+
+    input {
+        flex: 1;
+        width: calc(100% / ${props => props.boxCount});
+        height: calc(100% / ${props => props.boxCount});
+        text-align: center;
+        font-size: 1.8rem;
+        margin: 0 5px;
+        aspect-ratio: 1/1; // Add this line to maintain square aspect ratio
+        text-transform: uppercase;
+    }
+`;
+
+const SubmitButton = styled.button`
+    padding: 10px 20px;
+    font-size: 1.5rem;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #333;
+    }
+`;
 
 const PasswordEntryBoxes = () => {
     const { gameEngine, isLoading, updateGameVersion } = useContext(GameContext);
@@ -9,6 +50,8 @@ const PasswordEntryBoxes = () => {
     const [lastResult, setLastResult] = useState<GameStatus | null>(null);
     const [characterBoxes, setCharacterBoxes] = useState<ReactElement[]>([]);
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+    const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+    const [modalMessage, setModalMessage] = useState<string>('');
 
     // Set the number of character boxes to match the length of the secret code
     useEffect(() => {
@@ -39,6 +82,11 @@ const PasswordEntryBoxes = () => {
         }
     }, [characterCount])
 
+    const showErrorModal = (message: string) => {
+        setModalMessage(message);
+        setIsModalVisible(true);
+    };
+
     const handleKeyDown = useCallback((index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Backspace') {
             e.preventDefault();
@@ -68,6 +116,9 @@ const PasswordEntryBoxes = () => {
             }
             setGuessValues(newGuessValues);
         }
+        if (e.key === 'Enter') {
+            handleSubmit();
+        }
     }, [characterCount, guessValues]);
 
     // Create the character boxes
@@ -81,7 +132,6 @@ const PasswordEntryBoxes = () => {
                     ref={(el) => setInputRef(el, i)}
                     maxLength={1} 
                     value={guessValues[i] || ''}
-                    style={{ width: '30px', marginRight: '5px' }} 
                     onChange={(e) => handleInputChange(i, e.target.value)} 
                     onKeyDown={(e) => handleKeyDown(i, e)}
                 />
@@ -93,7 +143,7 @@ const PasswordEntryBoxes = () => {
     
     const handleSubmit = () => {
         if (guessValues.some(value => value === '')) {
-            alert('Please fill in all boxes before submitting.');
+            showErrorModal("Please fill in all character boxes before submitting.");
             return;
         }
         // Make a guess through the game engine
@@ -122,10 +172,11 @@ const PasswordEntryBoxes = () => {
     }
 
     return (
-        <div>
+        <BoxWrapper boxCount={characterCount}>
             {characterBoxes}
-            <button onClick={handleSubmit}>Submit</button>
-        </div>
+            <SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
+            {isModalVisible && <Modal show={isModalVisible} onClose={() => setIsModalVisible(false)}>{modalMessage}</Modal>}
+        </BoxWrapper>
     );
 }
 

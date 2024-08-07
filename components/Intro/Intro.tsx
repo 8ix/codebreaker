@@ -127,10 +127,14 @@ const StyledList = styled.ul`
 
 const Intro = () => {
     const [isAnimating, setIsAnimating] = useState(false);
+    const [isAnimationComplete, setIsAnimationComplete] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleBeginClick = () => {
         setIsAnimating(true);
+        setTimeout(() => {
+            setIsAnimationComplete(true);
+        }, 1000); // Adjust the delay to match your animation duration
     };
 
     const handleInstructionsClick = () => {
@@ -142,20 +146,24 @@ const Intro = () => {
     };
 
     return (
-        <IntroContainer>
-            <TopShutter className={isAnimating ? 'slide-up' : ''}>
-                <Container>
-                    <Logo />
-                    <p><b>Your mission:</b> crack a series of passwords, Time is of the essence, and your skills as a master hacker are about to be put to the ultimate test.</p>
-                </Container>
-            </TopShutter>
-            <BottomShutter className={isAnimating ? 'slide-down' : ''}>
-                <Container>
-                    <p>Remember, a true Codebreaker thinks creatively and uses every clue.</p>
-                    <Button onClick={handleBeginClick}>Begin</Button>
-                    <Button onClick={handleInstructionsClick}>How to Play</Button>
-                </Container>
-            </BottomShutter>
+        <IntroContainer className={isAnimationComplete ? 'no-pointer-events' : ''}>
+            {!isAnimationComplete && (
+                <>
+                    <TopShutter className={isAnimating ? 'slide-up' : ''}>
+                        <Container>
+                            <Logo />
+                            <p><b>Your mission:</b> crack a series of passwords, Time is of the essence, and your skills as a master hacker are about to be put to the ultimate test.</p>
+                        </Container>
+                    </TopShutter>
+                    <BottomShutter className={isAnimating ? 'slide-down' : ''}>
+                        <Container>
+                            <p>Remember, a true Codebreaker thinks creatively and uses every clue.</p>
+                            <Button onClick={handleBeginClick}>Begin</Button>
+                            <Button onClick={handleInstructionsClick}>How to Play</Button>
+                        </Container>
+                    </BottomShutter>
+                </>
+            )}
             <Modal show={isModalOpen} onClose={handleCloseModal}>
                 <h2>How to Play:</h2>
                 <StyledList>
@@ -180,5 +188,4 @@ const Intro = () => {
         </IntroContainer>
     );
 }
-
 export default Intro;

@@ -4,33 +4,48 @@ import { GameContext } from '../../context/GameContext';
 
 import StatusLight from '../UI/StatusLight/StatusLight';
 
+const GuessHistoryWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
 const GuessHistoryContainer = styled.div`
-    witdh: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px;
 `;
 
 const GuessItemBar = styled.ul`
     display: flex;
     list-style-type: none;
     padding: 0;
+    flex-direction: row;
+    justify-content: center;
+    background-color: #000;
+`;
+
+const LightWrapper = styled.div`
+    display: flex;
+    
+
+    &.lights{
+        flex-direction: row;
+        justify-content: center;
+    }
 `;
 
 const GuessItem = styled.li`
-    display: flex;
-    flex-direction: row;
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
+    text-align: center; 
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
     margin: 5px;
     background-color: #fff;
     color: #000;
     justify-content: center;
-
-    &.lights {
-        background-color: transparent;
-        padding: 0;
-        width: auto;
-        height: auto;
-    }
+    border: 1px solid #000;
+    border-radius: 50%;
 `;
 
 const GuessHistory = () => {
@@ -58,12 +73,12 @@ const GuessHistory = () => {
                     <GuessHistoryContainer key={index}>
                         <GuessItemBar>
                             {guessItems}
-                            <GuessItem className="lights">
-                                <StatusLight type="perfect" count={guess.perfect} />
-                                <StatusLight type="correct" count={guess.correct} />
-                                <StatusLight type="incorrect" count={guess.incorrect} />
-                            </GuessItem>
                         </GuessItemBar>
+                        <LightWrapper>
+                            <StatusLight type="perfect" count={guess.perfect} />
+                            <StatusLight type="correct" count={guess.correct} />
+                            <StatusLight type="incorrect" count={guess.incorrect} />
+                        </LightWrapper>
                     </GuessHistoryContainer>
                 );
             });
@@ -78,9 +93,9 @@ const GuessHistory = () => {
     }
 
     return (
-        <div>
+        <GuessHistoryWrapper>
             {guesses}
-        </div>    
+        </GuessHistoryWrapper>    
     );
 }
 

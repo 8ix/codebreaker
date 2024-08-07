@@ -21,3 +21,31 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+.hidden {
+  display: none;
+}
+
+.no-pointer-events {
+  pointer-events: none;
+}
+
+.slide-up {
+  animation: slideUp 1s forwards;
+}
+
+.slide-down {
+  animation: slideDown 1s forwards;
+}
+
+@keyframes slideUp {
+  to {
+      transform: translateY(-100%);
+  }
+}
+
+@keyframes slideDown {
+  to {
+      transform: translateY(100%);
+  }
+}
