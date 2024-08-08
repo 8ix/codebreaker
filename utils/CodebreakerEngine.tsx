@@ -24,7 +24,7 @@ export default class CodebreakerEngine {
       this.roundsPerStage = config.rounds;
       this.lives = config.lives;
       this.debug = config.debug;
-      this.currentStage = 1;
+      this.currentStage = 0;
       this.passwordCollection = config.passwordCollection;
 
       // Initialize first round settings
@@ -79,7 +79,8 @@ export default class CodebreakerEngine {
         roundsLeft: this.rounds,
         livesLeft: this.lives,
         gameOver: this.lives <= 0,
-        gameWon: guessResult.solved
+        gameWon: guessResult.solved,
+        currentStage: this.currentStage
       }
 
     }
@@ -138,7 +139,8 @@ export default class CodebreakerEngine {
         roundsLeft: this.rounds,
         livesLeft: this.lives,
         gameOver: this.lives <= 0,
-        gameWon: this.guesses.length > 0 ? this.guesses[this.guesses.length-1].solved : false
+        gameWon: this.guesses.length > 0 ? this.guesses[this.guesses.length-1].solved : false,
+        currentStage: this.currentStage
       }
     }
 

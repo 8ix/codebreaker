@@ -10,6 +10,7 @@ import GuessHistory from '../components/GuessHistory/GuessHistory';
 import Intro from '../components/Intro/Intro';
 import Container from '../components/UI/Container/Container';
 import Logo from '../components/UI/Logo/Logo';
+import InformationBar from '../components/InformationBar/InformationBar';
 
 //password list
 import Passwords from '../content/passwords.json';
@@ -43,13 +44,12 @@ function GameComponent() {
 
   if (isLoading) return <div>Loading game...</div>;
 
-  //  <Intro />
-
   return (
       <>
         <Intro />
         <Container paddingTop={60}>
           <Logo inverted={true} />
+          <InformationBar />
           <PasswordEntryBoxes />
           <Clues />
           <GuessHistory />

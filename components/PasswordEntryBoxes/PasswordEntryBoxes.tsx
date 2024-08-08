@@ -13,7 +13,8 @@ const BoxWrapper = styled.div<BoxWrapperProps>`
     display: flex;
     flex-direction: row;
     justify-content: center;
-    padding-top: 50px;
+    padding-top: 20px;
+    margin-bottom:20px;
     max-width: 800px;
 
     input {

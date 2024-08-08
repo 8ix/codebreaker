@@ -40,4 +40,5 @@ export type GameStatus = {
     livesLeft: number;
     gameOver: boolean;
     gameWon: boolean;
+    currentStage: number;
 }
