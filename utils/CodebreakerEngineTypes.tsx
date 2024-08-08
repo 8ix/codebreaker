@@ -1,18 +1,26 @@
 export type GameConfig = {
-    items: Array<string>,
-    secretCode: Array<string>,
+    passwordCollection: PasswordCollection | null,
     rounds: number,
     lives: number,
     debug: boolean,
-    clues: clues
 }
 
-export type clues = {
-    passwordHint: string,
-    passwordClue1: string,
-    passwordClue2: string,
-    passwordClue3: string
-} | null;
+export type Password = {
+    password: string;
+    passwordHint: string;
+    passwordClue1: string;
+    passwordClue2: string;
+    passwordClue3: string;
+}
+
+export type Clues = {
+    passwordHint: string;
+    passwordClue1: string;
+    passwordClue2: string;
+    passwordClue3: string;
+}
+
+export type PasswordCollection = Array<Password>;
 
 export type debugMessage = (string | number | Array<string> | Array<boolean>)[];
 
@@ -27,7 +35,7 @@ export type GuessResult = {
 
 export type GameStatus = {
     guessHistory: Array<GuessResult>;
-    clues: clues;
+    clues: Clues | null;
     roundsLeft: number;
     livesLeft: number;
     gameOver: boolean;

@@ -14,13 +14,6 @@ import Logo from '../components/UI/Logo/Logo';
 //password list
 import Passwords from '../content/passwords.json';
 
-type Password = {
-  password: string;
-  passwordHint: string;
-  passwordClue1: string;
-  passwordClue2: string;
-  passwordClue3: string;
-}
 
 export default function Home() {
   return (
@@ -33,28 +26,15 @@ export default function Home() {
 function GameComponent() {
   const { isLoading, initGame, gameEngine } = useContext(GameContext);
   const [isInitialized, setIsInitialized] = useState(false);
-  const passwordRef = useRef<Password | null>(null);
 
   useEffect(() => {
     if (!gameEngine) {
 
-      if (!passwordRef.current) {
-        const randomPassword = Passwords[Math.floor(Math.random() * Passwords.length)];
-        passwordRef.current = randomPassword;
-      }
-
       const defaultConfig = {
-        items: [],
-        secretCode: passwordRef.current.password.split(''),
         rounds: 5,
         lives: 1,
         debug: false,
-        clues: {
-          passwordHint: passwordRef.current.passwordHint,
-          passwordClue1: passwordRef.current.passwordClue1,
-          passwordClue2: passwordRef.current.passwordClue2,
-          passwordClue3: passwordRef.current.passwordClue3
-        }
+        passwordCollection: Passwords
       };
       initGame(defaultConfig);
       setIsInitialized(true);

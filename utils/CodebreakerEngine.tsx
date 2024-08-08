@@ -1,56 +1,67 @@
-import {GameConfig, debugMessage, GuessResult, GameStatus, clues} from './CodebreakerEngineTypes';
+import {GameConfig, debugMessage, GuessResult, GameStatus, PasswordCollection, Clues} from './CodebreakerEngineTypes';
 
 export default class CodebreakerEngine {
-    
-    items: Array<string>;
+
     secretCode: Array<string>;
     currentStage: number;
+    roundsPerStage: number;
     rounds: number;
     lives: number;
     guesses: Array<GuessResult>;
     debug : boolean;
-    clues: clues;
+    clues: Clues | null;
+    roundComplete: boolean;
+    passwordCollection: PasswordCollection | null;
 
     constructor(config: GameConfig = {
-      items: ['1', '2', '3', '4', '5', '6', '7', '8'],
-      secretCode: [],
       rounds: 8,
       lives: 3,
       debug: false,
-      clues: null
+      passwordCollection: null
     }){
 
-      if(config.items.length > 0){
-        this.items = config.items;
-      }else{
-        this.items = config.secretCode;
-      }
-
-      this.secretCode = config.secretCode;
-      this.currentStage = 1;
-      this.rounds = config.rounds;
+      // Initialize the game and set game configuration settings
+      this.roundsPerStage = config.rounds;
       this.lives = config.lives;
-      this.guesses = [];
       this.debug = config.debug;
-      this.clues = config.clues;
+      this.currentStage = 1;
+      this.passwordCollection = config.passwordCollection;
 
-      config.secretCode.length === 0 ? this.generateSecretCode() : null;
-      this.debugMessage(["Game Initiated:", this.secretCode]);
+      // Initialize first round settings
+      this.secretCode = [];
+      this.rounds = config.rounds;
+      this.guesses = [];
+      this.clues = null;
+      this.roundComplete = false;
+
+      this.newRound();
+      this.debugMessage(["Game Initiated"]);
     }
-  
-    generateSecretCode() {
-      this.secretCode = this.shuffleArray(this.items);
-      this.debugMessage(["The Secret Code is:", this.secretCode]);
+
+    newRound(): void {
+      if (this.passwordCollection && this.passwordCollection.length > 0) {
+        const randomIndex = Math.floor(Math.random() * this.passwordCollection.length);
+        const selectedPassword = this.passwordCollection[randomIndex];
+
+        this.secretCode = selectedPassword.password.split('');
+        this.clues = {
+          passwordHint: selectedPassword.passwordHint,
+          passwordClue1: selectedPassword.passwordClue1,
+          passwordClue2: selectedPassword.passwordClue2,
+          passwordClue3: selectedPassword.passwordClue3
+        };
+        this.passwordCollection.splice(randomIndex, 1);
+      } else {
+        this.secretCode = [];
+        this.clues = null;
+      }
+      
+      this.rounds = this.roundsPerStage;
+      this.guesses = [];
+      this.roundComplete = false;
+      this.debugMessage(["New Round Started"]);
     }
     
-    shuffleArray(array: Array<string>) : Array<string> {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    }
-
     makeGuess(guess: Array<string>): GameStatus  {
       let guessResult = this.checkGuess(guess);
       this.guesses.push(guessResult);
