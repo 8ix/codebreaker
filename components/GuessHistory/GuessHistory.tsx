@@ -101,7 +101,7 @@ const GuessHistory = () => {
             guessesItems.reverse();
             setGuesses(guessesItems);
         }
-    }, [gameEngine, gameVersion]);
+    }, [gameEngine, gameVersion, keycount]);
 
 
     if (isLoading || !gameEngine) {

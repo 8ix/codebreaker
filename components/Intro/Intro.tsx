@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import React, { useState } from "react";
+import styled, { keyframes } from "styled-components";
 
-import Container from '../UI/Container/Container';
-import Logo from '../UI/Logo/Logo';
-import Modal from '../UI//Modal/Modal';
+import Container from "../UI/Container/Container";
+import Logo from "../UI/Logo/Logo";
+import Modal from "../UI//Modal/Modal";
 
 
 const slideUp = keyframes`
@@ -146,16 +146,16 @@ const Intro = () => {
     };
 
     return (
-        <IntroContainer className={isAnimationComplete ? 'no-pointer-events' : ''}>
+        <IntroContainer className={isAnimationComplete ? "no-pointer-events" : ""}>
             {!isAnimationComplete && (
                 <>
-                    <TopShutter className={isAnimating ? 'slide-up' : ''}>
+                    <TopShutter className={isAnimating ? "slide-up" : ""}>
                         <Container>
                             <Logo />
                             <p><b>Your mission:</b> crack a series of passwords, Time is of the essence, and your skills as a master hacker are about to be put to the ultimate test.</p>
                         </Container>
                     </TopShutter>
-                    <BottomShutter className={isAnimating ? 'slide-down' : ''}>
+                    <BottomShutter className={isAnimating ? "slide-down" : ""}>
                         <Container>
                             <p>Remember, a true Codebreaker thinks creatively and uses every clue.</p>
                             <Button onClick={handleBeginClick}>Begin</Button>
@@ -168,9 +168,9 @@ const Intro = () => {
                 <h2>How to Play:</h2>
                 <StyledList>
                     <ol>
-                        <li>You'll be given a password hint and eight attempts to guess the password.</li>
+                        <li>You&apos;ll be given a password hint and eight attempts to guess the password.</li>
                         <li>Each password is a combination of two words, totaling 8 characters or less.</li>
-                        <li>After each guess, you'll see a series of colored lights to help you:
+                        <li>After each guess, you&apos;ll see a series of colored lights to help you:
                             <ul>
                                 <li><b>Green lights:</b> Number of letters in the correct position.</li>
                                 <li><b>Yellow lights:</b> Number of correct letters in the wrong position.</li>
@@ -180,7 +180,7 @@ const Intro = () => {
                                 Note: The order of the lights does not correspond to the positions in the password.
                             </span>
                         </li>
-                        <li>After a few incorrect guess, you'll start receive additional clues.</li>
+                        <li>After a few incorrect guess, you&apos;ll start receive additional clues.</li>
                         <li>Crack as many passwords as you can before running out of attempts!</li>
                     </ol>
                 </StyledList>
