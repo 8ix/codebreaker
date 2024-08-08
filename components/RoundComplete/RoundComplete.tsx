@@ -4,14 +4,14 @@ import { GameContext } from '../../context/GameContext';
 
 
 const RoundComplete = () => {
-    const { gameEngine, isLoading, gameVersion } = useContext(GameContext);
-    //const [statusBar, setStatusBar] = useState<ReactElement[]>([]);
+    const { gameEngine, isLoading, gameVersion, updateGameVersion } = useContext(GameContext);
 
     useEffect(() => {
         if (gameEngine) {
             const game = gameEngine.getGameStatus();
             if(game.gameWon === true){
                 gameEngine.newRound();
+                updateGameVersion();
             } 
         }
     }, [gameEngine, gameVersion]);

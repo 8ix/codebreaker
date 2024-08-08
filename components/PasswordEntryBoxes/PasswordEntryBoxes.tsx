@@ -58,8 +58,8 @@ const PasswordEntryBoxes = () => {
     useEffect(() => {
         if (gameEngine && !isLoading) {
             setCharacterCount(gameEngine.secretCode.length);
-            setGuessValues(new Array(gameEngine.secretCode.length).fill(''));
-        }
+            setGuessValues(new Array(gameEngine.secretCode.length).fill(''));    
+        } 
     }, [gameEngine, isLoading]);
 
     const setInputRef = useCallback((el: HTMLInputElement | null, index: number) => {
@@ -125,6 +125,12 @@ const PasswordEntryBoxes = () => {
     // Create the character boxes
     useEffect(() => {
         const newCharacterBoxes: ReactElement[] = [];
+
+        if(gameEngine?.secretCode.length !== characterCount) {
+            setCharacterCount(gameEngine?.secretCode.length || 0);
+            updateGameVersion();
+        }
+
         for(let i = 0; i < characterCount; i++) {
             newCharacterBoxes.push(
                 <input 
@@ -140,7 +146,6 @@ const PasswordEntryBoxes = () => {
         }
         setCharacterBoxes(newCharacterBoxes);
     }, [characterCount, guessValues, setInputRef]);
-
     
     const handleSubmit = () => {
         if (guessValues.some(value => value === '')) {
@@ -152,8 +157,7 @@ const PasswordEntryBoxes = () => {
             const result = gameEngine.makeGuess(guessValues);
             setLastResult(result);
             updateGameVersion();
-            
-            // Clear the guessValues state
+
             setGuessValues(new Array(characterCount).fill(''));
             
             // Clear all input values and set focus to the first input
