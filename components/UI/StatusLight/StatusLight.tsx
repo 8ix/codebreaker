@@ -15,13 +15,15 @@ const Lightbar = styled.div`
     flex-direction: row;
     list-style-type: none;
     padding: 0;
+    flex-direction: row;
+    justify-content: center;
 `;
 
 const Light = styled.div<{ type: LightProps['type'] }>`
     flex-direction: row;
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
     margin: 5px;
     background-color: ${props => 
         props.type === 'perfect' ? 'green' : 

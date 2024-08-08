@@ -1,6 +1,56 @@
 import React, { useContext, useEffect, useState, ReactElement } from 'react';
-import styled from 'styled-components';
+import styled, {keyframes} from 'styled-components';
 import { GameContext } from '../../context/GameContext';
+
+const ClueWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const bounceIn = keyframes`
+  0% {
+    transform: scale(0.1);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+`;
+
+const CluesItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #000;
+  border-radius: 5px;
+  background-color: #f5f5f5;
+  max-width: 500px;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.5s ease-out, opacity 0.5s ease-out;
+  margin: 0 auto;
+
+  &.expanded {
+    padding: 10px;
+    max-height: 200px; // Adjust this value as needed
+    opacity: 1;
+    margin-top: 20px;
+  }
+
+  &:nth-child(n+2) {
+    background-color: #ffd2e5;
+    margin-top: 5px;
+    font-size: 0.9rem;
+    animation: ${bounceIn} 0.5s ease-out;
+  }
+`;
 
 const Clues = () => {
     const { gameEngine, isLoading, gameVersion } = useContext(GameContext);
@@ -15,41 +65,35 @@ const Clues = () => {
 
             if(game.clues !== null && game.clues.passwordHint){
                 hints.push(
-                    <div key={game.clues.passwordHint}>
+                    <CluesItem key={game.clues.passwordHint} className="expanded">
                         <p>
                             <b>Password Hint:</b> {game.clues.passwordHint}
                         </p>
-                    </div>
-                );
-            }
-
-            if(game.roundsLeft <= 6){
-                game.clues !== null && hints.push(
-                    <div key={game.clues.passwordClue1}>
-                        <p>
-                            <b>Clue 1:</b> {game.clues.passwordClue1}
-                        </p>
-                    </div>
+                    </CluesItem>
                 );
             }
 
             if(game.roundsLeft <= 4){
                 game.clues !== null && hints.push(
-                    <div key={game.clues.passwordClue2}>
-                        <p>
-                            <b>Clue 2:</b> {game.clues.passwordClue2}
-                        </p>
-                    </div>
+                    <CluesItem key={game.clues.passwordClue1} className="expanded">
+                        <p>{game.clues.passwordClue1}</p>
+                    </CluesItem>
+                );
+            }
+
+            if(game.roundsLeft <= 3){
+                game.clues !== null && hints.push(
+                    <CluesItem key={game.clues.passwordClue2} className="expanded">
+                        <p>{game.clues.passwordClue2}</p>
+                    </CluesItem>
                 );
             }
 
             if(game.roundsLeft <= 2){
                 game.clues !== null && hints.push(
-                    <div key={game.clues.passwordClue3}>
-                        <p>
-                            <b>Clue 3:</b> {game.clues.passwordClue3}
-                        </p>
-                    </div>
+                    <CluesItem key={game.clues.passwordClue3} className="expanded">
+                        <p>{game.clues.passwordClue3}</p>
+                    </CluesItem>
                 );
             }
 
@@ -63,9 +107,9 @@ const Clues = () => {
     }
 
     return (
-        <div>
+        <ClueWrapper>
            {clues}
-        </div>    
+        </ClueWrapper>    
     );
 }
 

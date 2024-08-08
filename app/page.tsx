@@ -7,17 +7,16 @@ import { GameProvider, GameContext } from '../context/GameContext';
 import Clues from '../components/Clues/Clues';
 import PasswordEntryBoxes from '../components/PasswordEntryBoxes/PasswordEntryBoxes';
 import GuessHistory from '../components/GuessHistory/GuessHistory';
+import Intro from '../components/Intro/Intro';
+import Outro from '../components/Outro/Outro';
+import Container from '../components/UI/Container/Container';
+import Logo from '../components/UI/Logo/Logo';
+import InformationBar from '../components/InformationBar/InformationBar';
+import RoundComplete from '../components/RoundComplete/RoundComplete';
 
 //password list
-import Passwords from '../content/passwords.json';
+import Passwords from '../content/passwords2.json';
 
-type Password = {
-  password: string;
-  passwordHint: string;
-  passwordClue1: string;
-  passwordClue2: string;
-  passwordClue3: string;
-}
 
 export default function Home() {
   return (
@@ -30,28 +29,15 @@ export default function Home() {
 function GameComponent() {
   const { isLoading, initGame, gameEngine } = useContext(GameContext);
   const [isInitialized, setIsInitialized] = useState(false);
-  const passwordRef = useRef<Password | null>(null);
 
   useEffect(() => {
     if (!gameEngine) {
 
-      if (!passwordRef.current) {
-        const randomPassword = Passwords[Math.floor(Math.random() * Passwords.length)];
-        passwordRef.current = randomPassword;
-      }
-
       const defaultConfig = {
-        items: [],
-        secretCode: passwordRef.current.password.split(''),
-        rounds: 8,
+        rounds: 5,
         lives: 1,
         debug: false,
-        clues: {
-          passwordHint: passwordRef.current.passwordHint,
-          passwordClue1: passwordRef.current.passwordClue1,
-          passwordClue2: passwordRef.current.passwordClue2,
-          passwordClue3: passwordRef.current.passwordClue3
-        }
+        passwordCollection: Passwords
       };
       initGame(defaultConfig);
       setIsInitialized(true);
@@ -61,11 +47,17 @@ function GameComponent() {
   if (isLoading) return <div>Loading game...</div>;
 
   return (
-    <>
-      <h1>Codebreaker Game</h1>
-      <Clues />
-      <PasswordEntryBoxes />
-      <GuessHistory />
-    </>
+      <>
+        <Intro />
+        <Outro />
+        <RoundComplete />
+        <Container paddingTop={60}>
+          <Logo inverted={true} />
+          <InformationBar />
+          <PasswordEntryBoxes />
+          <Clues />
+          <GuessHistory />
+        </Container>
+      </>
   );
 }
