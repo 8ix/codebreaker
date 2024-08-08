@@ -148,10 +148,12 @@ const PasswordEntryBoxes = () => {
     }, [characterCount, guessValues, setInputRef]);
     
     const handleSubmit = () => {
+        /*
         if (guessValues.some(value => value === '')) {
             showErrorModal("Please fill in all character boxes before submitting.");
             return;
         }
+        */
         // Make a guess through the game engine
         if (gameEngine) {
             const result = gameEngine.makeGuess(guessValues);

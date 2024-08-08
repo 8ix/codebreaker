@@ -8,13 +8,14 @@ import Clues from '../components/Clues/Clues';
 import PasswordEntryBoxes from '../components/PasswordEntryBoxes/PasswordEntryBoxes';
 import GuessHistory from '../components/GuessHistory/GuessHistory';
 import Intro from '../components/Intro/Intro';
+import Outro from '../components/Outro/Outro';
 import Container from '../components/UI/Container/Container';
 import Logo from '../components/UI/Logo/Logo';
 import InformationBar from '../components/InformationBar/InformationBar';
 import RoundComplete from '../components/RoundComplete/RoundComplete';
 
 //password list
-import Passwords from '../content/passwords.json';
+import Passwords from '../content/passwords2.json';
 
 
 export default function Home() {
@@ -48,6 +49,7 @@ function GameComponent() {
   return (
       <>
         <Intro />
+        <Outro />
         <RoundComplete />
         <Container paddingTop={60}>
           <Logo inverted={true} />
