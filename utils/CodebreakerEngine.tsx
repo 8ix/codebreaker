@@ -72,6 +72,7 @@ export default class CodebreakerEngine {
       this.lives === 0 ? this.debugMessage(["Game Over"]) : null;
     
       guessResult.solved ? this.debugMessage(["Puzzle Solved"]) : null;
+      guessResult.solved ? this.currentStage++ : null;
 
       return {
         guessHistory: this.guesses,

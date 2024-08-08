@@ -11,6 +11,7 @@ import Intro from '../components/Intro/Intro';
 import Container from '../components/UI/Container/Container';
 import Logo from '../components/UI/Logo/Logo';
 import InformationBar from '../components/InformationBar/InformationBar';
+import RoundComplete from '../components/RoundComplete/RoundComplete';
 
 //password list
 import Passwords from '../content/passwords.json';
@@ -47,6 +48,7 @@ function GameComponent() {
   return (
       <>
         <Intro />
+        <RoundComplete />
         <Container paddingTop={60}>
           <Logo inverted={true} />
           <InformationBar />
