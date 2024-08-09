@@ -42,6 +42,10 @@ const CluesItem = styled.div`
     max-height: 200px; // Adjust this value as needed
     opacity: 1;
     margin-top: 20px;
+
+    @media (max-width: 500px) {
+      margin-top: 0px;
+    }
   }
 
   &:nth-child(n+2) {

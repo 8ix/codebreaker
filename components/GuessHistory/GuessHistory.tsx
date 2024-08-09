@@ -62,6 +62,14 @@ const GuessItem = styled.li`
         background-color: #4b8f4b;
         color: #fff;
     }
+
+    @media (max-width: 500px) {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        font-size: 0.8em;
+        margin: 2px;
+    }
 `;
 
 const GuessHistory = () => {

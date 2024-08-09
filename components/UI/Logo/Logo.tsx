@@ -19,13 +19,27 @@ const LogoStyle = styled.div<LogoProps>`
         font-weight: 400;
         font-style: normal;
     }
+
+    @media (max-width: 500px) {
+        h1{
+            font-size: 1.9rem;
+        }
+    }
 `;
 
 const StyledIcon = styled(Image)<LogoProps>`
     padding:10px;
     background-color: ${props => props.inverted ? '#000;' : '#fff;'}
     border-radius: 50%;
-    margin-right:10px;    
+    margin-right:10px;   
+    width: 70px;
+    height: 70px; 
+
+     @media (max-width: 500px) {
+        width: 40px;
+        height: 40px;
+        padding:10px;
+    }
 `;
 
 const Logo = (props: LogoProps) => {

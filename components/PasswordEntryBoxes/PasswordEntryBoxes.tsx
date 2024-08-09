@@ -17,16 +17,35 @@ const BoxWrapper = styled.div<BoxWrapperProps>`
     margin-bottom:20px;
     max-width: 800px;
 
-    input {
-        flex: 1;
-        width: calc(100% / ${props => props.boxCount});
-        height: calc(100% / ${props => props.boxCount});
-        text-align: center;
-        font-size: 1.8rem;
-        margin: 0 5px;
-        aspect-ratio: 1/1; // Add this line to maintain square aspect ratio
-        text-transform: uppercase;
+    .charwrapper{
+        input {
+            flex: 1;
+            width: calc(100% / ${props => props.boxCount});
+            height: calc(100% / ${props => props.boxCount});
+            text-align: center;
+            font-size: 1.8rem;
+            margin: 0 5px;
+            aspect-ratio: 1/1; // Add this line to maintain square aspect ratio
+            text-transform: uppercase;
+
+            @media (max-width: 500px) {
+                margin: 0 1px;
+                font-size: 1.0rem;
+            }
+        }
     }
+    
+    @media (max-width: 500px) {
+        flex-direction: column;
+        padding:10px 10px 0 10px;
+        margin-bottom:0;
+    }
+`;
+
+const CharWrapper = styled.div`
+    display: flex;
+    flex-direction:row;    
+    height:100%;
 `;
 
 const SubmitButton = styled.button`
@@ -42,6 +61,15 @@ const SubmitButton = styled.button`
     &:hover {
         background-color: #333;
     }
+
+    @media (max-width: 500px) {
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        margin:20px;
+    }
+    
+    
 `;
 
 const PasswordEntryBoxes = () => {
@@ -148,12 +176,7 @@ const PasswordEntryBoxes = () => {
     }, [characterCount, guessValues, setInputRef]);
     
     const handleSubmit = () => {
-        /*
-        if (guessValues.some(value => value === '')) {
-            showErrorModal("Please fill in all character boxes before submitting.");
-            return;
-        }
-        */
+  
         // Make a guess through the game engine
         if (gameEngine) {
             const result = gameEngine.makeGuess(guessValues);
@@ -180,7 +203,7 @@ const PasswordEntryBoxes = () => {
 
     return (
         <BoxWrapper boxCount={characterCount}>
-            {characterBoxes}
+            <CharWrapper className="charwrapper">{characterBoxes}</CharWrapper>
             <SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
             {isModalVisible && <Modal show={isModalVisible} onClose={() => setIsModalVisible(false)}>{modalMessage}</Modal>}
         </BoxWrapper>

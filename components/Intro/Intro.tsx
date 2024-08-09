@@ -166,23 +166,20 @@ const Intro = () => {
             )}
             <Modal show={isModalOpen} onClose={handleCloseModal}>
                 <h2>How to Play:</h2>
-                <StyledList>
-                    <ol>
-                        <li>You&apos;ll be given a password hint and eight attempts to guess the password.</li>
-                        <li>Each password is a combination of two words, totaling 8 characters or less.</li>
-                        <li>After each guess, you&apos;ll see a series of colored lights to help you:
-                            <ul>
-                                <li><b>Green lights:</b> Number of letters in the correct position.</li>
-                                <li><b>Yellow lights:</b> Number of correct letters in the wrong position.</li>
-                                <li><b>Red lights:</b> Number of incorrect letters.</li>
-                            </ul>
-                            <span>
-                                Note: The order of the lights does not correspond to the positions in the password.
-                            </span>
-                        </li>
-                        <li>After a few incorrect guess, you&apos;ll start receive additional clues.</li>
-                        <li>Crack as many passwords as you can before running out of attempts!</li>
-                    </ol>
+                <StyledList>     
+                <ol>
+                    <li>Your mission is to crack as many passwords as possible before running out of attempts.</li>
+                    <li>For each new password, you have 5 attempts to guess correctly.</li>
+                    <li>After each guess, you&aposll receive color-coded feedback:
+                        <ul>
+                            <li><b>Green:</b> Correct letter in the correct position.</li>
+                            <li><b>Yellow:</b> Correct letter but in the wrong position.</li>
+                            <li><b>Grey:</b> Letter not in the password.</li>
+                        </ul>
+                    </li>
+                    <li>After each guess, you&aposll receive an additional clue to help you.</li>
+                    <li>The game ends when you&aposve used all 5 attempts on a password.</li>
+                </ol>
                 </StyledList>
             </Modal>
         </IntroContainer>
