@@ -170,15 +170,15 @@ const Intro = () => {
                 <ol>
                     <li>Your mission is to crack as many passwords as possible before running out of attempts.</li>
                     <li>For each new password, you have 5 attempts to guess correctly.</li>
-                    <li>After each guess, you'll receive color-coded feedback:
+                    <li>After each guess, you&aposll receive color-coded feedback:
                         <ul>
                             <li><b>Green:</b> Correct letter in the correct position.</li>
                             <li><b>Yellow:</b> Correct letter but in the wrong position.</li>
                             <li><b>Grey:</b> Letter not in the password.</li>
                         </ul>
                     </li>
-                    <li>After each guess, you'll receive an additional clue to help you.</li>
-                    <li>The game ends when you've used all 5 attempts on a password.</li>
+                    <li>After each guess, you&aposll receive an additional clue to help you.</li>
+                    <li>The game ends when you&aposve used all 5 attempts on a password.</li>
                 </ol>
                 </StyledList>
             </Modal>
