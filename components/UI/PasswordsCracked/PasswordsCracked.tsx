@@ -16,6 +16,17 @@ const BarContainer = styled.div`
         font-weight: bold;
         font-size: 1.2rem;
     }
+
+    @media (max-width: 500px) {
+        p{
+            font-size: 1rem;
+            line-height: 25px;
+        }
+        .passwordIcon{
+            width: 20px;
+            height: 20px;
+        }
+    }
 `;
 
 const StyledIcon = styled(Image)`
@@ -25,7 +36,7 @@ const StyledIcon = styled(Image)`
 const PasswordsCracked = (props:BarProps) => {
     return (
         <BarContainer>
-            <StyledIcon src={"/password.svg"} alt="Password Icon" width={30} height={30} />
+            <StyledIcon className="passwordIcon" src={"/password.svg"} alt="Password Icon" width={30} height={30} />
             <p>Solved : {props.qty}</p>
         </BarContainer>
     );
