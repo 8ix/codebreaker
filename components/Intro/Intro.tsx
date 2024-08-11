@@ -24,7 +24,12 @@ const slideDown = keyframes`
     }
 `;
 
-const IntroContainer = styled.div`
+const IntroContainer = styled.div.attrs<{ isHidden: boolean }>(props => ({
+  style: {
+    pointerEvents: props.isHidden ? 'none' : 'auto',
+    opacity: props.isHidden ? 0 : 1,
+  },
+}))`
     position: fixed;
     top: 0;
     left: 0;
@@ -32,8 +37,6 @@ const IntroContainer = styled.div`
     height: 100vh;
     overflow: hidden;
     z-index: 1000;
-    pointer-events: ${props => props.isHidden ? 'none' : 'auto'};
-    opacity: ${props => props.isHidden ? 0 : 1};
     transition: opacity 0.5s ease-in-out;
 `;
 
@@ -126,7 +129,7 @@ const StyledList = styled.ul`
     }
 `;
 
-const Intro = () => {
+const Intro: React.FC = () => {
     const { gameEngine, isLoading, gameVersion, updateGameVersion } = useContext(GameContext);
 
     const [isAnimating, setIsAnimating] = useState(false);
@@ -145,7 +148,6 @@ const Intro = () => {
     const handleNewGameClick = () => {
         setIsAnimating(true);
         setTimeout(() => {
-
             setIsGameOver(false);
             setIsIntroHidden(true);
         }, 1000);

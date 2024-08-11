@@ -73,7 +73,7 @@ const SubmitButton = styled.button`
 `;
 
 const PasswordEntryBoxes = () => {
-    const { gameEngine, isLoading, updateGameVersion } = useContext(GameContext);
+    const { gameEngine, isLoading, gameVersion , updateGameVersion } = useContext(GameContext);
     const [characterCount, setCharacterCount] = useState<number>(0);
     const [guessValues, setGuessValues] = useState<string[]>([]);
     const [lastResult, setLastResult] = useState<GameStatus | null>(null);
@@ -88,7 +88,7 @@ const PasswordEntryBoxes = () => {
             setCharacterCount(gameEngine.secretCode.length);
             setGuessValues(new Array(gameEngine.secretCode.length).fill(''));    
         } 
-    }, [gameEngine, isLoading]);
+    }, [gameEngine, isLoading, gameVersion]);
 
     const setInputRef = useCallback((el: HTMLInputElement | null, index: number) => {
         inputRefs.current[index] = el;
@@ -109,7 +109,7 @@ const PasswordEntryBoxes = () => {
         if (value && index < characterCount - 1) {
             inputRefs.current[index + 1]?.focus();
         }
-    }, [characterCount])
+    }, [characterCount, gameVersion])
 
     const showErrorModal = (message: string) => {
         setModalMessage(message);
@@ -148,7 +148,7 @@ const PasswordEntryBoxes = () => {
         if (e.key === 'Enter') {
             handleSubmit();
         }
-    }, [characterCount, guessValues]);
+    }, [characterCount, guessValues, gameVersion]);
 
     // Create the character boxes
     useEffect(() => {
@@ -173,7 +173,7 @@ const PasswordEntryBoxes = () => {
             );
         }
         setCharacterBoxes(newCharacterBoxes);
-    }, [characterCount, guessValues, setInputRef]);
+    }, [characterCount, guessValues, gameVersion, setInputRef]);
     
     const handleSubmit = () => {
   

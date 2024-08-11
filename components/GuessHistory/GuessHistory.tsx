@@ -82,7 +82,6 @@ const GuessHistory = () => {
             const guessHistory = gameEngine.getGuessHistory();
             const guessesItems: ReactElement[] = [];
 
-
             guessHistory.forEach((guess, index) => {
 
                 let guessItems: ReactElement[] = [];

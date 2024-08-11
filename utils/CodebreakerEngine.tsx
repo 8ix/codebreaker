@@ -81,6 +81,7 @@ export default class CodebreakerEngine {
     
     makeGuess(guess: Array<string>): GameStatus  {
       let guessResult = this.checkGuess(guess);
+
       this.guesses.push(guessResult);
 
       !guessResult.solved && this.rounds != 0 ? this.rounds-- : null;
@@ -100,7 +101,6 @@ export default class CodebreakerEngine {
         gameWon: guessResult.solved,
         currentStage: this.currentStage
       }
-
     }
   
     checkGuess(guess: string[]): GuessResult {
