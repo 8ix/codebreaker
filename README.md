@@ -13,7 +13,7 @@ In Codebreaker, players attempt to guess a hidden code, receiving feedback after
 
 ## Live Demo
 
-[Link to live demo - update when available]
+[Link to live demo](http://codebreakers.andbert.com/)
 
 ## Key Features
 
