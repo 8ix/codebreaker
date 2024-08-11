@@ -14,7 +14,7 @@ import InformationBar from '../components/InformationBar/InformationBar';
 import RoundComplete from '../components/RoundComplete/RoundComplete';
 
 //password list
-import Passwords from '../content/passwords2.json';
+import Passwords from '../content/passwords.json';
 
 
 export default function Home() {

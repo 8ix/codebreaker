@@ -210,7 +210,7 @@ const Intro: React.FC = () => {
                 <ol>
                     <li>Your mission is to crack as many passwords as possible before running out of attempts.</li>
                     <li>For each new password, you have 5 attempts to guess correctly.</li>
-                    <li>After each guess, you'll receive color-coded feedback:
+                    <li>After each guess, you'll receive colour-coded feedback:
                         <ul>
                             <li><b>Green:</b> Correct letter in the correct position.</li>
                             <li><b>Yellow:</b> Correct letter but in the wrong position.</li>
