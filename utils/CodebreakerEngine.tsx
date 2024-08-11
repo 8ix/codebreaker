@@ -12,6 +12,7 @@ export default class CodebreakerEngine {
     clues: Clues | null;
     roundComplete: boolean;
     passwordCollection: PasswordCollection | null;
+    originalConfig: GameConfig;
 
     constructor(config: GameConfig = {
       rounds: 8,
@@ -26,6 +27,7 @@ export default class CodebreakerEngine {
       this.debug = config.debug;
       this.currentStage = 0;
       this.passwordCollection = config.passwordCollection;
+      this.originalConfig = config;
 
       // Initialize first round settings
       this.secretCode = [];
@@ -36,6 +38,21 @@ export default class CodebreakerEngine {
 
       this.newRound();
       this.debugMessage(["Game Initiated"]);
+    }
+
+    newGame(): void {
+      this.roundsPerStage = this.originalConfig.rounds;
+      this.lives = this.originalConfig.lives;
+      this.debug = this.originalConfig.debug;
+      this.currentStage = 0;
+      this.passwordCollection = this.originalConfig.passwordCollection;
+      this.secretCode = [];
+      this.rounds = this.originalConfig.rounds;
+      this.guesses = [];
+      this.clues = null;
+      this.roundComplete = false;
+      this.newRound();
+      this.debugMessage(["New Game Started"]);
     }
 
     newRound(): void {

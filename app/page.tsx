@@ -8,7 +8,6 @@ import Clues from '../components/Clues/Clues';
 import PasswordEntryBoxes from '../components/PasswordEntryBoxes/PasswordEntryBoxes';
 import GuessHistory from '../components/GuessHistory/GuessHistory';
 import Intro from '../components/Intro/Intro';
-import Outro from '../components/Outro/Outro';
 import Container from '../components/UI/Container/Container';
 import Logo from '../components/UI/Logo/Logo';
 import InformationBar from '../components/InformationBar/InformationBar';
@@ -49,7 +48,6 @@ function GameComponent() {
   return (
       <>
         <Intro />
-        <Outro />
         <RoundComplete />
         <Container paddingTop={60}>
           <Logo inverted={true} />

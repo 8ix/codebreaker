@@ -1,51 +1,67 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled, { keyframes } from "styled-components";
+import { GameContext } from '../../context/GameContext';
 
 import Container from "../UI/Container/Container";
 import Logo from "../UI/Logo/Logo";
 import Modal from "../UI//Modal/Modal";
 
-
 const slideUp = keyframes`
     from {
-        top: 0;
+        transform: translateY(0);
     }
     to {
-        top: -100%;
+        transform: translateY(-100%);
     }
 `;
 
 const slideDown = keyframes`
     from {
-        bottom: 0;
+        transform: translateY(0);
     }
     to {
-        bottom: -100%;
+        transform: translateY(100%);
     }
 `;
 
 const IntroContainer = styled.div`
-    position: absolute;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-`;
-
-
-const TopShutter = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 1000;
+    pointer-events: ${props => props.isHidden ? 'none' : 'auto'};
+    opacity: ${props => props.isHidden ? 0 : 1};
+    transition: opacity 0.5s ease-in-out;
+`;
+
+const Shutter = styled.div`
+    position: absolute;
+    width: 100%;
     height: 50%;
     background-color: #000;
-    transition: top 2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    transition: transform 1s ease-in-out;
+
+    &.top {
+        top: 0;
+    }
+
+    &.bottom {
+        bottom: 0;
+    }
 
     &.slide-up {
-        animation: ${slideUp} 2s forwards;
+        animation: ${slideUp} 1s forwards;
+    }
+
+    &.slide-down {
+        animation: ${slideDown} 1s forwards;
     }
 
     p {
@@ -56,31 +72,17 @@ const TopShutter = styled.div`
         color: #fff;
         text-align: center;
     }
-`;
-
-const BottomShutter = styled.div`
-    display: block;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 50%;
-    background-color: #000;
-    color: #fff;
-    text-align: center;
-    transition: bottom 2s;
-
-    &.slide-down {
-        animation: ${slideDown} 2s forwards;
-    }
-
-    p {
+    .codebreaker{
         font-size: 1rem;
         margin: 0 auto;
         max-width: 600px;
         padding: 30px 20px;
         font-weight: bold;
         color: #f0f868;
+    }
+    &.bottomshutter{
+       justify-content: flex-start;
+       text-align:center;
     }
 `;
 
@@ -97,7 +99,6 @@ const Button = styled.button`
     margin: 10px;
     border-radius: 50px;
     cursor: pointer;
-
     transition: background-color 0.5s, color 0.5s;
 
     &:hover {
@@ -126,15 +127,28 @@ const StyledList = styled.ul`
 `;
 
 const Intro = () => {
+    const { gameEngine, isLoading, gameVersion, updateGameVersion } = useContext(GameContext);
+
     const [isAnimating, setIsAnimating] = useState(false);
-    const [isAnimationComplete, setIsAnimationComplete] = useState(false);
+    const [isIntroHidden, setIsIntroHidden] = useState(false);
+    const [isGameOver, setIsGameOver] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [gameScore, setGameScore] = useState(0);
 
     const handleBeginClick = () => {
         setIsAnimating(true);
         setTimeout(() => {
-            setIsAnimationComplete(true);
-        }, 1000); // Adjust the delay to match your animation duration
+            setIsIntroHidden(true);
+        }, 1000);
+    };
+
+    const handleNewGameClick = () => {
+        setIsAnimating(true);
+        setTimeout(() => {
+
+            setIsGameOver(false);
+            setIsIntroHidden(true);
+        }, 1000);
     };
 
     const handleInstructionsClick = () => {
@@ -145,44 +159,69 @@ const Intro = () => {
         setIsModalOpen(false);
     };
 
+    useEffect(() => {
+        if (gameEngine) {
+            const game = gameEngine.getGameStatus();
+
+            if (game.gameOver && !isGameOver) {
+                setIsGameOver(true);
+                setIsIntroHidden(false);
+                setIsAnimating(false);
+                setGameScore(game.currentStage);
+                gameEngine.newGame();
+                updateGameVersion();
+            }
+        }
+    }, [gameEngine, gameVersion, isGameOver]);
+
     return (
-        <IntroContainer className={isAnimationComplete ? "no-pointer-events" : ""}>
-            {!isAnimationComplete && (
-                <>
-                    <TopShutter className={isAnimating ? "slide-up" : ""}>
-                        <Container>
-                            <Logo />
-                            <p><b>Your mission:</b> crack a series of passwords, Time is of the essence, and your skills as a master hacker are about to be put to the ultimate test.</p>
-                        </Container>
-                    </TopShutter>
-                    <BottomShutter className={isAnimating ? "slide-down" : ""}>
-                        <Container>
-                            <p>Remember, a true Codebreaker thinks creatively and uses every clue.</p>
+        <IntroContainer isHidden={isIntroHidden}>
+            <Shutter className={`top ${isAnimating ? 'slide-up' : ''}`}>
+                <Container>
+                    <Logo />
+                    {isGameOver ? (
+                        <p><b>Game Over!</b> Your final score: {gameScore}</p>
+                    ) : (
+                        <p><b>Your mission:</b> crack a series of passwords. Time is of the essence, and your skills as a master hacker are about to be put to the ultimate test.</p>
+                    )}
+                </Container>
+            </Shutter>
+            <Shutter className={`bottom bottomshutter ${isAnimating ? 'slide-down' : ''}`}>
+                <Container>
+                    {isGameOver ? (
+                        <>
+                            <p className={'codebreaker'}>Want to test your skills again?</p>
+                            <Button onClick={handleNewGameClick}>New Game</Button>
+                        </>
+                    ) : (
+                        <>
+                            <p className={'codebreaker'}>Remember, a true Codebreaker thinks creatively and uses every clue.</p>
                             <Button onClick={handleBeginClick}>Begin</Button>
                             <Button onClick={handleInstructionsClick}>How to Play</Button>
-                        </Container>
-                    </BottomShutter>
-                </>
-            )}
+                        </>
+                    )}
+                </Container>
+            </Shutter>
             <Modal show={isModalOpen} onClose={handleCloseModal}>
                 <h2>How to Play:</h2>
                 <StyledList>     
                 <ol>
                     <li>Your mission is to crack as many passwords as possible before running out of attempts.</li>
                     <li>For each new password, you have 5 attempts to guess correctly.</li>
-                    <li>After each guess, you&aposll receive color-coded feedback:
+                    <li>After each guess, you'll receive color-coded feedback:
                         <ul>
                             <li><b>Green:</b> Correct letter in the correct position.</li>
                             <li><b>Yellow:</b> Correct letter but in the wrong position.</li>
                             <li><b>Grey:</b> Letter not in the password.</li>
                         </ul>
                     </li>
-                    <li>After each guess, you&aposll receive an additional clue to help you.</li>
-                    <li>The game ends when you&aposve used all 5 attempts on a password.</li>
+                    <li>After each guess, you'll receive an additional clue to help you.</li>
+                    <li>The game ends when you've used all 5 attempts on a password.</li>
                 </ol>
                 </StyledList>
             </Modal>
         </IntroContainer>
     );
 }
+
 export default Intro;
